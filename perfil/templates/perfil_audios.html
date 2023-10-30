@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/perfil_audios.css' %}">
+{% endblock %}
+{% block titulo %}
+    Aninha - Vídeos
+{% endblock %}
+
+{% block container %}
+
+    <header class="cabecalho">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <nav class="cabecalho-navegacao">
+                <a href="{% url 'videos' %}">
+                    Vídeos
+                    <span></span>
+                </a>
+                <a href="{% url 'meus_dados' %}">
+                    Painel
+                    <span></span>
+                </a>
+                <a href="{% url 'logout' %}">
+                    Sair
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <header class="cabecalho-mobile">
+        <div>
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <div class="botao-mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <header class="cabecalho-oculto">
+        <div class="botao-oculto">
+            <span></span>
+            <span></span>
+        </div>
+        <a href="https://www.cachorrinha.com.br">
+            <img src="{% static 'images/logo.png' %}">
+        </a>
+        <nav>
+            <a href="{% url 'videos' %}">
+                Vídeos
+                <span></span>
+            </a>
+            <a href="{% url 'meus_dados' %}">
+                Painel
+                <span></span>
+            </a>
+            <a href="{% url 'logout' %}">
+                Sair
+            </a>
+        </nav>
+    </header>
+
+    <div class="cabecalho-perfil">
+        <div class="fotos">
+            <span>
+            </span>
+            <span>
+            </span>
+            <span>
+            </span>
+            <span>
+            </span>
+        </div>
+
+        <div class="foto-perfil">
+            <img src="{{menina.foto.url}}">
+        </div>
+    </div>
+    <div class="informacoes-principais-perfil">
+        <h1> {{menina.nome}} </h1>
+        <!-- <div class="metricas-perfil">
+            <div class="metrica-video">
+                <h2> 543 </h2>
+                <p> Vídeos </p>
+            </div>
+            <div class="metrica-visualizacoes">
+                <h2> 50.000 </h2>
+                <p> Visualizações </p>
+            </div>
+            <div class="metrica-curtidas">
+                <h2> 2.000 </h2>
+                <p> Curtidas </p>
+            </div>
+        </div> -->
+        <!-- <div class="descricao">
+            Lorem Ipsum é simplesmente um texto fictício da indústria tipográfica e de impressão. 
+            Lorem Ipsum tem sido o texto fictício padrão da indústria desde os anos 1500, quando 
+            um impressor desconhecido pegou uma galera de tipos e os embaralhou para fazer um livro de espécimes de tipos
+        </div> -->
+    </div>
+
+    <div class="container">
+        <div>
+            <a href="{% url 'perfil_videos' menina.nome %}" class="filtro-videos">
+                Vídeos
+            </a>
+            <a href="{% url 'perfil_premium' menina.nome %}" class="filtro-premium">
+                Premium
+            </a>
+            <a href="" class="filtro-audios selecionado">
+                Áudios
+            </a>
+        </div>
+        <div class="audios">
+            {% if audio1 %}
+                <div class="audio" id="audio1">
+                    <h2>
+                        {{audio1.nome}}
+                    </h2>
+                    <!-- <audio controls>
+                        <source src="runaway.mp3" type="audio/mpeg">
+                        <source src="runaway.ogg" type="audio/ogg">
+                        <source src="runaway.wav" type="audio/wav">
+                    </audio> -->
+                    <audio id="player" src="{{audio1.arquivo.url}}"></audio>
+                    <div class="audio-whats">
+                        <img src="{% static 'images/play.png' %}" class="imagem-play">
+                        <img src="{% static 'images/pause.png' %}" class="imagem-pause">
+                        <div class="progresso">
+                            <div>
+                                <div>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <p> 0:00 </p>
+                            <p> {{audio1|tamanho_audio}} </p>
+                        </div>
+                        <img src="{% static 'images/audio-whats.png' %}" class="imagem-audio">
+                    </div>
+                </div>
+            {% endif %}  
+
+            {% if audio2 %}
+                <div class="audio" id="audio2">
+                    <h2>
+                       {{audio2.nome}}
+                    </h2>
+                    <!-- <audio controls>
+                        <source src="runaway.mp3" type="audio/mpeg">
+                        <source src="runaway.ogg" type="audio/ogg">
+                        <source src="runaway.wav" type="audio/wav">
+                    </audio> -->
+                    <audio id="player" src="{{audio2.arquivo.url}}"></audio>
+                    <div class="audio-whats">
+                        <img src="{% static 'images/play.png' %}" class="imagem-play">
+                        <img src="{% static 'images/pause.png' %}" class="imagem-pause">
+                        <div class="progresso">
+                            <div>
+                                <div>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <p> 0:00 </p>
+                            <p> {{audio2|tamanho_audio}} </p>
+                        </div>
+                        <img src="{% static 'images/audio-whats.png' %}" class="imagem-audio">
+                    </div>
+                </div>
+            {% endif %} 
+
+            {% if audio3 %}
+                <div class="audio" id="audio3">
+                    <h2>
+                        {{audio3.nome}}
+                    </h2>
+                    <!-- <audio controls>
+                        <source src="runaway.mp3" type="audio/mpeg">
+                        <source src="runaway.ogg" type="audio/ogg">
+                        <source src="runaway.wav" type="audio/wav">
+                    </audio> -->
+                    <audio id="player" src="{{audio3.arquivo.url}}"></audio>
+                    <div class="audio-whats">
+                        <img src="{% static 'images/play.png' %}" class="imagem-play">
+                        <img src="{% static 'images/pause.png' %}" class="imagem-pause">
+                        <div class="progresso">
+                            <div>
+                                <div>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <p> 0:00 </p>
+                            <p> {{audio3|tamanho_audio}} </p>
+                        </div>
+                        <img src="{% static 'images/audio-whats.png' %}" class="imagem-audio">
+                    </div>
+                </div>
+            {% endif %} 
+
+            {% if audio4 %}
+                <div class="audio" id="audio4">
+                    <h2>
+                        {{audio4.nome}}
+                    </h2>
+                    <!-- <audio controls>
+                        <source src="runaway.mp3" type="audio/mpeg">
+                        <source src="runaway.ogg" type="audio/ogg">
+                        <source src="runaway.wav" type="audio/wav">
+                    </audio> -->
+                    <audio id="player" src="{{audio4.arquivo.url}}"></audio>
+                    <div class="audio-whats">
+                        <img src="{% static 'images/play.png' %}" class="imagem-play">
+                        <img src="{% static 'images/pause.png' %}" class="imagem-pause">
+                        <div class="progresso">
+                            <div>
+                                <div>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <p> 0:00 </p>
+                            <p> {{audio4|tamanho_audio}} </p>
+                        </div>
+                        <img src="{% static 'images/audio-whats.png' %}" class="imagem-audio">
+                    </div>
+                </div>
+            {% endif %} 
+
+        </div>
+    </div>
+
+{% endblock %}
+    
+{% block scripts %}
+    <script src="{% static 'js/cabecalho.js' %}"></script>
+    <script src="{% static 'js/perfil_audios1.js' %}"></script>
+    <script src="{% static 'js/perfil_audios2.js' %}"></script>
+    <script src="{% static 'js/perfil_audios3.js' %}"></script>
+    <script src="{% static 'js/perfil_audios4.js' %}"></script>
+{% endblock %}

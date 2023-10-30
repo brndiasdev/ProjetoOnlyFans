@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/loginregistro.css' %}">
+{% endblock %}
+{% block titulo %}
+    Trocando senha
+{% endblock %}
+
+{% block container %}
+    <header class="cabecalho">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <nav class="cabecalho-navegacao">
+                <a href="">
+                    Home
+                    <span></span>
+                </a>
+                <a href="">
+                    Planos
+                    <span></span>
+                </a>
+                {% if not request.user.is_authenticated %}
+                    <a href="{% url 'login' %}">
+                        Entrar
+                    </a>
+                {% else %}
+                    <a href="{% url 'meus_dados' %}">
+                        Painel
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <header class="cabecalho-mobile">
+        <div>
+            <a href="">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <div class="botao-mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <header class="cabecalho-oculto">
+        <div class="botao-oculto">
+            <span></span>
+            <span></span>
+        </div>
+        <a href="https://www.cachorrinha.com.br">
+            <img src="{% static 'images/logo.png' %}">
+        </a>
+        <nav>
+            <a href="">
+                Home
+                <span></span>
+            </a>
+            <a href="">
+                Planos
+                <span></span>
+            </a>
+            {% if not request.user.is_authenticated %}
+                <a href="{% url 'login' %}">
+                    Entrar
+                </a>
+            {% else %}
+                <a href="{% url 'meus_dados' %}">
+                    Painel
+                </a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        <div>   
+            <div class="loginregistro">
+                <h1>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Mudando a senha de {{request.session.secret.trocar_senha_usuario}}
+                </h1>
+                <strong>
+                    - 1 = A senha tem que ter no mínimo 4 caracteres
+                </strong>
+                {% include 'parciais/_messages.html' %}
+                <form action="{% url 'formulario_esqueceu_senha' request.session.secret.trocar_senha_codigo %}" method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <label for="senha1"> Nova senha: </label>
+                        <input type="password" id="senha1" name="senha1" placeholder="********">
+                    </div>
+                    <div>
+                        <label for="senha2"> Repetir a nova senha: </label>
+                        <input type="password" id="senha2" name="senha2" placeholder="********">
+                    </div>
+                    <input type="submit" value="Mudar senha">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/cabecalho.js' %}"></script>
+
+    <script>
+        const senha1 = document.querySelector('#senha1')
+        const senha2 = document.querySelector('#senha2')
+
+        senha1.addEventListener('blur', e => {
+            email.setAttribute('placeholder', 'email@gmail.com')
+        })
+
+        senha1.addEventListener('blur', e => {
+            senha.setAttribute('placeholder', '********')  
+        })
+
+        senha2.addEventListener('blur', e => {
+            email.setAttribute('placeholder', 'email@gmail.com')
+        })
+
+        senha2.addEventListener('blur', e => {
+            senha.setAttribute('placeholder', '********')  
+        })
+    </script>
+{% endblock %}

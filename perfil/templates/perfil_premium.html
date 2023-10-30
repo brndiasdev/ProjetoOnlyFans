@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/premium.css' %}">
+{% endblock %}
+{% block titulo %}
+    {{menina.nome}} - Vídeos Premium
+{% endblock %}
+
+{% block container %}
+
+    <header class="cabecalho">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <nav class="cabecalho-navegacao">
+                <a href="{% url 'videos' %}">
+                    Vídeos
+                    <span></span>
+                </a>
+                <a href="{% url 'meus_dados' %}">
+                    Painel
+                    <span></span>
+                </a>
+                <a href="{% url 'logout' %}">
+                    Sair
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <header class="cabecalho-mobile">
+        <div>
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <div class="botao-mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <header class="cabecalho-oculto">
+        <div class="botao-oculto">
+            <span></span>
+            <span></span>
+        </div>
+        <a href="https://www.cachorrinha.com.br">
+            <img src="{% static 'images/logo.png' %}">
+        </a>
+        <nav>
+            <a href="{% url 'videos' %}">
+                Vídeos
+                <span></span>
+            </a>
+            <a href="{% url 'meus_dados' %}">
+                Painel
+                <span></span>
+            </a>
+            <a href="{% url 'logout' %}">
+                Sair
+            </a>
+        </nav>
+    </header>
+
+    <div class="cabecalho-perfil">
+        <div class="fotos">
+            <span>
+            </span>
+            <span>
+            </span>
+            <span>
+            </span>
+            <span>
+            </span>
+        </div>
+
+        <div class="foto-perfil">
+            <img src="{{menina.foto.url}}">
+        </div>
+    </div>
+    <div class="informacoes-principais-perfil">
+        <h1> {{menina.nome}} </h1>
+        <!-- <div class="metricas-perfil">
+            <div class="metrica-video">
+                <h2> 543 </h2>
+                <p> Vídeos </p>
+            </div>
+            <div class="metrica-visualizacoes">
+                <h2> 50.000 </h2>
+                <p> Visualizações </p>
+            </div>
+            <div class="metrica-curtidas">
+                <h2> 2.000 </h2>
+                <p> Curtidas </p>
+            </div>
+        </div> -->
+        <!-- <div class="descricao">
+            Lorem Ipsum é simplesmente um texto fictício da indústria tipográfica e de impressão. 
+            Lorem Ipsum tem sido o texto fictício padrão da indústria desde os anos 1500, quando 
+            um impressor desconhecido pegou uma galera de tipos e os embaralhou para fazer um livro de espécimes de tipos
+        </div> -->
+    </div>
+
+    <div class="container">
+        <div>
+            <a href="{% url 'perfil_videos' menina.nome %}" class="filtro-videos">
+                Vídeos
+            </a>
+            <a href="" class="filtro-premium selecionado">
+                Premium
+            </a>
+            <a href="{% url 'perfil_audios' menina.nome %}" class="filtro-audios">
+                Áudios
+            </a>
+        </div>
+        <div>
+            {% include 'parciais/_messages.html' %}
+            <div class="videos">
+                {% if lista_zip %}
+                    {% for video, validador in lista_zip %}
+                        {% if not validador %}
+                            <div>
+                                <h2>
+                                    {{video.nome|formatacao_slug}}
+                                </h2>
+                                <div class="video">
+                                    {% if video.foto %}
+                                        <img src="{{video.foto.url}}" alt="">
+                                    {% endif %}
+                                    <div class="video-lock">
+                                        <i class="fa-solid fa-lock"></i>
+                                    </div>
+                                </div>
+                                <p class="video-descricao" style="margin: 1rem 0 0 0;">
+                                    {{video.descricao}}
+                                </p>
+                                <a href="{% url 'pagamento_video_premium' video.nome %}">
+                                    Desbloqueie o vídeo agora por R${{video.preco_premium}}!
+                                </a>
+                                <div class="metricas-video">
+                                    <p>
+                                        <i class="fa-regular fa-heart"></i>
+                                        {{video|video_numero_curtidas}}
+                                    </p>
+                                    <p>
+                                        <i class="fa-regular fa-comments"></i>
+                                        {{video|video_numero_comentarios}}
+                                    </p>
+                                    <!-- <p>
+                                        <i class="fa-solid fa-eye"></i>
+                                        234.321
+                                    </p> -->
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="video-liberado">
+                                <h2>
+                                    {{video.nome|formatacao_slug}}
+                                </h2>
+                                <div class="video-arquivo">
+                                    <img src="{{video.foto.url}}" alt="">
+                                </div>
+                                <p class="video-descricao">
+                                    {{video.descricao}}
+                                </p>
+                                <div class="metricas-video">
+                                    <p>
+                                        <i class="fa-regular fa-heart"></i>
+                                        {{video|video_numero_curtidas}}
+                                    </p>
+                                    <p>
+                                        <i class="fa-regular fa-comments"></i>
+                                        {{video|video_numero_comentarios}}
+                                    </p>
+                                </div>
+                                <a href="{% url 'pagina_video' video.nome %}">
+                                    Assistir Vídeo
+                                </a>
+                            </div> 
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <h2>
+                        Nenhum vídeo premium disponível no momento!
+                    </h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+    
+{% block scripts %}
+    <script src="{% static 'js/cabecalho.js' %}"></script>
+{% endblock %}

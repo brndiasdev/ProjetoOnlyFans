@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/videos.css' %}">
+{% endblock %}
+{% block titulo %}
+    Vídeos
+{% endblock %}
+
+{% block container %}
+
+    <header class="cabecalho">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <nav class="cabecalho-navegacao">
+                <a href="{% url 'videos' %}">
+                    Vídeos
+                    <span></span>
+                </a>
+                <a href="{% url 'meus_dados' %}">
+                    Painel
+                    <span></span>
+                </a>
+                <a href="{% url 'logout' %}">
+                    Sair
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <header class="cabecalho-mobile">
+        <div>
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <div class="botao-mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <header class="cabecalho-oculto">
+        <div class="botao-oculto">
+            <span></span>
+            <span></span>
+        </div>
+        <a href="https://www.cachorrinha.com.br">
+            <img src="{% static 'images/logo.png' %}">
+        </a>
+        <nav>
+            <a href="{% url 'videos' %}">
+                Vídeos
+                <span></span>
+            </a>
+            <a href="{% url 'meus_dados' %}">
+                Painel
+                <span></span>
+            </a>
+            <a href="{% url 'logout' %}">
+                Sair
+            </a>
+        </nav>
+    </header>
+
+    <div class="cabecalho-perfil">
+        {% for menina in meninas %}
+            {% if menina.foto %}
+                <a href="{% url 'perfil_videos' menina.nome %}">
+                    <img src="{{menina.foto.url}}">
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="informacoes-principais-perfil">
+        <h1> Todos os Vídeos </h1>
+        <!-- <div class="metricas-perfil">
+            <div class="metrica-video">
+                <h2> 543 </h2>
+                <p> Vídeos </p>
+            </div>
+            <div class="metrica-visualizacoes">
+                <h2> 50.000 </h2>
+                <p> Visualizações </p>
+            </div>
+            <div class="metrica-curtidas">
+                <h2> 2.000 </h2>
+                <p> Curtidas </p>
+            </div>
+        </div> -->
+    </div>
+
+    <div class="container">
+        <div>
+            {% for menina in meninas %}
+                <a href="{% url 'perfil_videos' menina.nome %}" class="filtro-videos">
+                    {{menina.nome}}
+                </a>
+            {% endfor %}
+        </div>
+        <div>
+            <!-- <div class="videos">
+                {% for video in videos %}
+                    <div class="video">
+                        <h2>
+                            {{video.nome|formatacao_slug}}
+                        </h2>
+                        {% if video.foto %}
+                            <div class="video-arquivo">
+                                <img src="{{video.foto.url}}" alt="">
+                            </div>
+                        {% endif %}
+                        <p class="video-descricao">
+                            {{video.descricao}}
+                        </p>
+                        <div class="metricas-video">
+                            <p>
+                                <i class="fa-regular fa-heart"></i>
+                                {{video|video_numero_curtidas}}
+                            </p>
+                            <p>
+                                <i class="fa-regular fa-comments"></i>
+                                {{video|video_numero_comentarios}}
+                            </p>
+                        </div>
+                        <a href="{% url 'pagina_video' video.nome %}">
+                            Assistir Vídeo
+                        </a>
+                    </div>
+                {% endfor %}
+            </div> -->
+        
+            <div class="videos">
+                {% if lista_zip %}
+                    {% for video, validador in lista_zip %}
+                        {% if not validador %}
+                            {% if video.premium %}
+                                <div>
+                                    <h2>
+                                        {{video.nome|formatacao_slug}}
+                                    </h2>
+                                    <div class="video">
+                                        {% if video.foto %}
+                                            <img src="{{video.foto.url}}" alt="">
+                                        {% endif %}
+                                        <div class="video-lock">
+                                            <i class="fa-solid fa-lock"></i>
+                                        </div>
+                                    </div>
+                                    <p class="video-descricao" style="margin: 1rem 0 0 0;">
+                                        {{video.descricao}}
+                                    </p>
+                                    <a href="{% url 'pagamento_video_premium' video.nome %}">
+                                        Desbloqueie o vídeo agora por R${{video.preco_premium}}!
+                                    </a>
+                                    <div class="metricas-video">
+                                        <p>
+                                            <i class="fa-regular fa-heart"></i>
+                                            {{video|video_numero_curtidas}}
+                                        </p>
+                                        <p>
+                                            <i class="fa-regular fa-comments"></i>
+                                            {{video|video_numero_comentarios}}
+                                        </p>
+                                        <!-- <p>
+                                            <i class="fa-solid fa-eye"></i>
+                                            234.321
+                                        </p> -->
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="video-liberado">
+                                    <h2>
+                                        {{video.nome|formatacao_slug}}
+                                    </h2>
+                                    <div class="video-arquivo">
+                                        <img src="{{video.foto.url}}" alt="">
+                                    </div>
+                                    <p class="video-descricao">
+                                        {{video.descricao}}
+                                    </p>
+                                    <div class="metricas-video">
+                                        <p>
+                                            <i class="fa-regular fa-heart"></i>
+                                            {{video|video_numero_curtidas}}
+                                        </p>
+                                        <p>
+                                            <i class="fa-regular fa-comments"></i>
+                                            {{video|video_numero_comentarios}}
+                                        </p>
+                                    </div>
+                                    <a href="{% url 'pagina_video' video.nome %}">
+                                        Assistir Vídeo
+                                    </a>
+                                </div> 
+                            {% endif %}
+                        {% else %}
+                            <div class="video-liberado">
+                                <h2>
+                                    {{video.nome|formatacao_slug}}
+                                </h2>
+                                <div class="video-arquivo">
+                                    <img src="{{video.foto.url}}" alt="">
+                                </div>
+                                <p class="video-descricao">
+                                    {{video.descricao}}
+                                </p>
+                                <div class="metricas-video">
+                                    <p>
+                                        <i class="fa-regular fa-heart"></i>
+                                        {{video|video_numero_curtidas}}
+                                    </p>
+                                    <p>
+                                        <i class="fa-regular fa-comments"></i>
+                                        {{video|video_numero_comentarios}}
+                                    </p>
+                                </div>
+                                <a href="{% url 'pagina_video' video.nome %}">
+                                    Assistir Vídeo
+                                </a>
+                            </div> 
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <h2>
+                        Nenhum vídeo premium disponível no momento!
+                    </h2>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+    
+{% block scripts %}
+    <script src="{% static 'js/cabecalho.js' %}"></script>
+{% endblock %}

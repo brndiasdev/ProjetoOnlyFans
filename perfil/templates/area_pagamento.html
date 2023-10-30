@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/area_pagamento.css' %}">
+{% endblock %}
+{% block titulo %}
+    Area de pagamento
+{% endblock %}
+
+{% block container %}
+    <header class="cabecalho">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <nav class="cabecalho-navegacao">
+                <a href="{% url 'home' %}">
+                    Home
+                    <span></span>
+                </a>
+                <a href="{% url 'home' %}">
+                    Planos
+                    <span></span>
+                </a>
+                {% if not request.user.is_authenticated %}
+                    <a href="{% url 'login' %}">
+                        Entrar
+                    </a>
+                {% else %}
+                    <a href="{% url 'meus_dados' %}">
+                        Painel
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <header class="cabecalho-mobile">
+        <div>
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <div class="botao-mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <header class="cabecalho-oculto">
+        <div class="botao-oculto">
+            <span></span>
+            <span></span>
+        </div>
+        <a href="https://www.cachorrinha.com.br">
+            <img src="{% static 'images/logo.png' %}">
+        </a>
+        <nav>
+            <a href="{% url 'home' %}">
+                Home
+                <span></span>
+            </a>
+            <a href="{% url 'home' %}">
+                Planos
+                <span></span>
+            </a>
+            {% if not request.user.is_authenticated %}
+                <a href="{% url 'login' %}">
+                    Entrar
+                </a>
+            {% else %}
+                <a href="{% url 'meus_dados' %}">
+                    Painel
+                </a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        <div>   
+            <form action="{% url 'area_pagamento' %}" method="POST" class="pagamento">
+                {% csrf_token %}
+                <h1>
+                    <i class="fa-solid fa-money-bill"></i>
+                    Area de pagamento
+                </h1>
+                {% include 'parciais/_messages.html' %}
+                {% if plano %}
+                    <h2>
+                        Plano escolhido:
+                    </h2>
+                    <div class="plano">
+                        <h3>
+                            <i class="fa-solid fa-pencil"></i>
+                            {% if plano == 'tres_meses' %}
+                                ASSINATURA DE 3 MESES - R$ {{preco_tres_meses}}
+                            {% elif plano == 'seis_meses' %}
+                                ASSINATURA DE 6 MESES - R$ {{preco_seis_meses}}
+                            {% else %}
+                                ASSINATURA DE 1 MÊS - R$ {{preco_um_mes}}
+                            {% endif %}
+                        </h3>
+                    </div>
+                    <h2>
+                        Quer selecionar outro plano?
+                    </h2>
+                {% else %}
+                    <h2>
+                        Selecione um plano:
+                    </h2>
+                {% endif %}
+                <div class="planos">
+                    <div>
+                        <label for="tres_meses">
+                            <i class="fa-solid fa-pencil"></i>
+                            {% if not preco_tres_meses %}
+                                ASSINATURA DE 3 MESES - R$ 0.00
+                            {% else %}
+                                ASSINATURA DE 3 MESES - R$ {{preco_tres_meses}}
+                            {% endif %}
+                        </label>
+                        <input type="radio" id="tres_meses" name="plano" value="tres_meses">
+                    </div>
+                    <div>
+                        <label for="seis_meses">
+                            <i class="fa-solid fa-pencil"></i>
+                            {% if not preco_seis_meses %}
+                                ASSINATURA DE 6 MESES - R$ 0.00
+                            {% else %}
+                                ASSINATURA DE 6 MESES - R$ {{preco_seis_meses}}
+                            {% endif %}
+                        </label>
+                        <input type="radio" id="seis_meses" name="plano" value="seis_meses">
+                    </div>
+                    <div>
+                        <label for="doze_meses">
+                            <i class="fa-solid fa-pencil"></i>
+                            {% if not preco_um_mes %}
+                                ASSINATURA DE 1 MÊS - R$ 0.00
+                            {% else %}
+                                ASSINATURA DE 1 MÊS - R$ {{preco_um_mes}}
+                            {% endif %}
+                        </label>
+                        <input type="radio" id="um_mes" name="plano" value="um_mes">
+                    </div>
+                </div>
+                <div class="form">
+                    {% csrf_token %}
+                    <div class="pix">
+                        <label for="pix">
+                            <img src="{% static 'images/pix.jpg' %}" alt="">
+                        </label>
+                        <input type="radio" id="pix" name="tipo-pagamento" value="pix">
+                    </div>
+                    <div class="cartao">
+                        <div>
+                            <label for="cartao">
+                                <img src="{% static 'images/logo_mastercard.png' %}" alt="">
+                            </label>
+                            <label for="cartao">
+                                <img src="{% static 'images/logo_visa.png' %}" alt="">
+                            </label>
+                            <input type="radio" id="cartao" name="tipo-pagamento" value="cartao">
+                        </div>
+                        <div>
+                            <div>
+                                <label for="nome-cartao">
+                                    Nome do cartão:
+                                </label>
+                                <input type="text" id="nome-cartao" name="nome_cartao" placeholder="Nome..." value="{{request.POST.nome_cartao}}">
+                            </div>
+                            <div>
+                                <label for="numero-cartao">
+                                    Número do cartão:
+                                </label>
+                                <input type="text" id="numero-cartao" name="numero_cartao" placeholder="•••• •••• •••• ••••" maxlength="19"
+                                value="{{request.POST.numero_cartao}}">
+                            </div>
+                            <div>
+                                <label for="codigo-cartao">
+                                    Código de segurança:
+                                </label>
+                                <input type="text" id="codigo-cartao" name="codigo_cartao" placeholder="CVV" value="{{request.POST.codigo_cartao}}">
+                            </div>
+                            <div>
+                                <label for="data-expiracao">
+                                    Data da expiração do cartão:
+                                </label>
+                                <input type="text" id="data-expiracao" name="data_expiracao" placeholder="mm/aa" value="{{request.POST.data_expiracao}}">
+                            </div>
+                            <div>
+                                <label for="numero-parcelas">
+                                    Número de parcelas:
+                                </label>
+                                <select id="numero-parcelas" name="numero_parcelas">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="boleto">
+                        <label for="boleto">
+                            <img src="{% static 'images/boleto.png' %}" alt="">
+                        </label>
+                        <input type="radio" id="boleto" name="tipo-pagamento" value="boleto">
+                    </div> -->
+                </div>
+                <input type="submit" value="Assine o plano agora" id="form-submit">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/cabecalho.js' %}"></script>
+    <script src="{% static 'js/area_pagamento.js' %}" defer></script>
+    <script src="{% static 'jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'jquery/jquery.mask.min.js' %}"></script>
+{% endblock %}

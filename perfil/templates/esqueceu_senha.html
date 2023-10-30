@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/loginregistro.css' %}">
+{% endblock %}
+{% block titulo %}
+    Login
+{% endblock %}
+
+{% block container %}
+    <header class="cabecalho">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <nav class="cabecalho-navegacao">
+                <a href="{% url 'home' %}">
+                    Home
+                    <span></span>
+                </a>
+                <a href="{% url 'home' %}">
+                    Planos
+                    <span></span>
+                </a>
+                {% if not request.user.is_authenticated %}
+                    <a href="{% url 'login' %}">
+                        Entrar
+                    </a>
+                {% else %}
+                    <a href="{% url 'meus_dados' %}">
+                        Painel
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <header class="cabecalho-mobile">
+        <div>
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <div class="botao-mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <header class="cabecalho-oculto">
+        <div class="botao-oculto">
+            <span></span>
+            <span></span>
+        </div>
+        <a href="https://www.cachorrinha.com.br">
+            <img src="{% static 'images/logo.png' %}">
+        </a>
+        <nav>
+            <a href="{% url 'home' %}">
+                Home
+                <span></span>
+            </a>
+            <a href="{% url 'home' %}">
+                Planos
+                <span></span>
+            </a>
+            {% if not request.user.is_authenticated %}
+                <a href="{% url 'login' %}">
+                    Entrar
+                </a>
+            {% else %}
+                <a href="{% url 'meus_dados' %}">
+                    Painel
+                </a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        <div>   
+            <div class="loginregistro">
+                <h1>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Recupere a sua senha
+                </h1>
+                {% include 'parciais/_messages.html' %}
+                <form action="{% url 'esqueceu_senha' %}" method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <label for="email"> Digite o seu e-mail: </label>
+                        <input type="email" id="email" name="email" placeholder="email@gmail.com">
+                    </div>
+                    <input type="submit" value="Recuperar senha">
+                </form>
+                <span></span>
+                <a href="{% url 'login' %}">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Lembrou da senha? Entre!
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/cabecalho.js' %}"></script>
+    <script>
+        const email = document.querySelector('#email')
+        const senha = document.querySelector('#senha')
+
+        email.addEventListener('blur', e => {
+            email.setAttribute('placeholder', 'email@gmail.com')
+        })
+
+        email.addEventListener('focus', e => {
+            email.setAttribute('placeholder', '')
+        })
+
+    </script>
+{% endblock %}

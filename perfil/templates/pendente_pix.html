@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/situation.css' %}">
+{% endblock %}
+{% block titulo %}
+    Pendente pix
+{% endblock %}
+
+{% block container %}
+    <header class="cabecalho">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <nav class="cabecalho-navegacao">
+                <a href="{% url 'videos' %}">
+                    Vídeos
+                    <span></span>
+                </a>
+                <a href="{% url 'meus_dados' %}">
+                    Painel
+                    <span></span>
+                </a>
+                <a href="{% url 'logout' %}">
+                    Sair
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <header class="cabecalho-mobile">
+        <div>
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <div class="botao-mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <header class="cabecalho-oculto">
+        <div class="botao-oculto">
+            <span></span>
+            <span></span>
+        </div>
+        <a href="https://www.cachorrinha.com.br">
+            <img src="{% static 'images/logo.png' %}">
+        </a>
+        <nav>
+            <a href="{% url 'videos' %}">
+                Vídeos
+                <span></span>
+            </a>
+            <a href="{% url 'meus_dados' %}">
+                Painel
+                <span></span>
+            </a>
+            <a href="{% url 'logout' %}">
+                Sair
+            </a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div>   
+            <div class="situation">
+                <h1>
+                    Pagar com Pix
+                </h1>
+                <div class="info">
+                    Pague com Pix em qualquer lugar e em qualquer dia e a qualquer hora. O pagamento é instantâneo, prático
+                    e pode ser feito em poucos segundos. É muito rápido e seguro :)
+                </div>
+                <img src="{{request.session.link}}" alt="">
+                <strong>- 1 = copie o código abaixo</strong>
+                {% if request.session.codigo_pix %}
+                    <span>
+                        {{request.session.codigo_pix}}
+                    </span>
+                {% endif %}
+                <a id="copiar_pix" value="{{request.session.codigo_pix}}">
+                    <i class="fa-solid fa-copy"></i>
+                    Copiar Código
+                    <div>
+                        <span></span>
+                        Copiado
+                    </div>
+                </a>
+                <strong>- 2 = abra o app do seu banco ou instituição financeira e entre no ambiente PIX</strong>
+                <strong>- 3 = escolha a opção "PIX copia e cola" para colar o código acima </strong>
+                <strong>- 4 = cole o código, confira as informações e finalize a compra</strong>
+                <h1>
+                    Depois de pagar, clique no botão abaixo para assistir os vídeos
+                </h1>
+                <a href="{% url 'videos' %}">
+                    <i class="fa-solid fa-video"></i>
+                    Assistir vídeos
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/cabecalho.js' %}"></script>
+    <script>
+        const copiarPix = document.querySelector('#copiar_pix');
+        const copiarPixDiv = document.querySelector('#copiar_pix div');
+        document.addEventListener('click', e => {
+            const el = e.target;
+            if(el == copiarPix){
+                e.preventDefault();
+                const pix = copiarPix.getAttribute('value');
+	            navigator.clipboard.writeText(pix);
+                copiarPixDiv.classList.add('aparecer');
+                setTimeout(function(){
+                    copiarPixDiv.classList.remove('aparecer');
+                }, 2000);
+            }
+        });
+    </script>
+{% endblock %}

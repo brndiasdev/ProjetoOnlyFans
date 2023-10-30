@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/area_pagamento.css' %}">
+{% endblock %}
+{% block titulo %}
+    Area de pagamento
+{% endblock %}
+
+{% block container %}
+    <header class="cabecalho">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <nav class="cabecalho-navegacao">
+                <a href="{% url 'home' %}">
+                    Home
+                    <span></span>
+                </a>
+                <a href="{% url 'home' %}">
+                    Planos
+                    <span></span>
+                </a>
+                {% if not request.user.is_authenticated %}
+                    <a href="{% url 'login' %}">
+                        Entrar
+                    </a>
+                {% else %}
+                    <a href="{% url 'meus_dados' %}">
+                        Painel
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <header class="cabecalho-mobile">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <div class="botao-mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <header class="cabecalho-oculto">
+        <div class="botao-oculto">
+            <span></span>
+            <span></span>
+        </div>
+        <a href="https://www.cachorrinha.com.br">
+            <img src="{% static 'images/logo.png' %}">
+        </a>
+        <nav>
+            <a href="{% url 'home' %}">
+                Home
+                <span></span>
+            </a>
+            <a href="{% url 'home' %}">
+                Planos
+                <span></span>
+            </a>
+            {% if not request.user.is_authenticated %}
+                <a href="{% url 'login' %}">
+                    Entrar
+                </a>
+            {% else %}
+                <a href="{% url 'meus_dados' %}">
+                    Painel
+                </a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        <div>   
+            <form action="{% url 'pagamento_video_premium' video_premium %}" method="POST" class="pagamento">
+                {% csrf_token %}
+                <h1>
+                    <i class="fa-solid fa-money-bill"></i>
+                    Area de pagamento
+                </h1>
+                {% include 'parciais/_messages.html' %}
+                <h2>
+                    Vídeo: {{video_premium|formatacao_slug}}
+                </h2>
+                <h2>
+                    Desbloqueie o vídeo agora por R${{preco_pedido}}!
+                </h2>
+                <div class="form">
+                    {% csrf_token %}
+                    <div class="pix">
+                        <label for="pix">
+                            <img src="{% static 'images/pix.jpg' %}" alt="">
+                        </label>
+                        <input type="radio" id="pix" name="tipo-pagamento" value="pix">
+                    </div>
+                    <div class="cartao">
+                        <div>
+                            <label for="cartao">
+                                <img src="{% static 'images/logo_mastercard.png' %}" alt="">
+                            </label>
+                            <label for="cartao">
+                                <img src="{% static 'images/logo_visa.png' %}" alt="">
+                            </label>
+                            <input type="radio" id="cartao" name="tipo-pagamento" value="cartao">
+                        </div>
+                        <div>
+                            <div>
+                                <label for="nome-cartao">
+                                    Nome do cartão:
+                                </label>
+                                <input type="text" id="nome-cartao" name="nome_cartao" placeholder="Nome..." value="{{request.POST.nome_cartao}}">
+                            </div>
+                            <div>
+                                <label for="numero-cartao">
+                                    Número do cartão:
+                                </label>
+                                <input type="text" id="numero-cartao" name="numero_cartao" placeholder="•••• •••• •••• ••••" maxlength="19"
+                                value="{{request.POST.numero_cartao}}">
+                            </div>
+                            <div>
+                                <label for="codigo-cartao">
+                                    Código de segurança:
+                                </label>
+                                <input type="text" id="codigo-cartao" name="codigo_cartao" placeholder="CVV" value="{{request.POST.codigo_cartao}}">
+                            </div>
+                            <div>
+                                <label for="data-expiracao">
+                                    Data da expiração do cartão:
+                                </label>
+                                <input type="text" id="data-expiracao" name="data_expiracao" placeholder="mm/aaaa" value="{{request.POST.data_expiracao}}">
+                            </div>
+                            <div>
+                                <label for="numero-parcelas">
+                                    Número de parcelas:
+                                </label>
+                                <select id="numero-parcelas" name="numero_parcelas">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="boleto">
+                        <label for="boleto">
+                            <img src="{% static 'images/boleto.png' %}" alt="">
+                        </label>
+                        <input type="radio" id="boleto" name="tipo-pagamento" value="boleto">
+                    </div> -->
+                </div>
+                <input type="submit" value="Desbloqueie o vídeo agora" id="form-submit">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/cabecalho.js' %}"></script>
+    <script src="{% static 'js/area_pagamento.js' %}" defer></script>
+    <script src="{% static 'jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'jquery/jquery.mask.min.js' %}"></script>
+{% endblock %}

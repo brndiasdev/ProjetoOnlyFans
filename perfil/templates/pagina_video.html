@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pagina_video.css' %}">
+{% endblock %}
+{% block titulo %}
+    Vídeos
+{% endblock %}
+
+{% block container %}
+
+    <header class="cabecalho">
+        <div>
+            <a href="https://www.cachorrinha.com.br">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <nav class="cabecalho-navegacao">
+                <a href="{% url 'videos' %}">
+                    Vídeos
+                    <span></span>
+                </a>
+                <a href="{% url 'meus_dados' %}">
+                    Painel
+                    <span></span>
+                </a>
+                <a href="{% url 'logout' %}">
+                    Sair
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <header class="cabecalho-mobile">
+        <div>
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}">
+            </a>
+            <div class="botao-mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <header class="cabecalho-oculto">
+        <div class="botao-oculto">
+            <span></span>
+            <span></span>
+        </div>
+        <a href="https://www.cachorrinha.com.br">
+            <img src="{% static 'images/logo.png' %}">
+        </a>
+        <nav>
+            <a href="{% url 'videos' %}">
+                Vídeos
+                <span></span>
+            </a>
+            <a href="{% url 'meus_dados' %}">
+                Painel
+                <span></span>
+            </a>
+            <a href="{% url 'logout' %}">
+                Sair
+            </a>
+        </nav>
+    </header>
+
+    <div class="cabecalho-perfil">
+        <div class="fotos">
+            <span>
+            </span>
+            <span>
+            </span>
+            <span>
+            </span>
+            <span>
+            </span>
+        </div>
+
+        <div class="foto-perfil">
+            <img src="{{menina.foto.url}}">
+        </div>
+    </div>
+    <div class="informacoes-principais-perfil">
+        <h1> {{menina.nome}} </h1>
+        <!-- <div class="metricas-perfil">
+            <div class="metrica-video">
+                <h2> 543 </h2>
+                <p> Vídeos </p>
+            </div>
+            <div class="metrica-visualizacoes">
+                <h2> 50.000 </h2>
+                <p> Visualizações </p>
+            </div>
+            <div class="metrica-curtidas">
+                <h2> 2.000 </h2>
+                <p> Curtidas </p>
+            </div>
+        </div> -->
+        <!-- <div class="descricao">
+            Lorem Ipsum é simplesmente um texto fictício da indústria tipográfica e de impressão. 
+            Lorem Ipsum tem sido o texto fictício padrão da indústria desde os anos 1500, quando 
+            um impressor desconhecido pegou uma galera de tipos e os embaralhou para fazer um livro de espécimes de tipos
+        </div> -->
+    </div>
+
+    <div class="container">
+        <div>
+            <div class="videos">
+                <div class="video">
+                    <h2> {{video.nome|formatacao_slug}}  </h2>
+                    <div class="video-arquivo">
+                        <iframe id="panda-423d393f-2b01-402f-9c82-c5f7108cabc6" 
+                        src="{{video.link}}"
+                        style="border:none;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
+                        allowfullscreen=true fetchpriority="high"></iframe>
+                    </div>
+                    <p class="video-descricao">
+                        {{video.descricao}}
+                    </p>
+                    <div class="metricas-video">
+                        <a href="">
+                            <i class="fa-regular fa-heart"></i>
+                            {{numero_curtidas}}
+                        </a>
+                        <a href="">
+                            <i class="fa-regular fa-comments"></i>
+                            {{numero_comentarios}}
+                        </a>
+                        <!-- <p>
+                            <i class="fa-solid fa-eye"></i>
+                            234.321
+                        </p> -->
+                    </div>
+                </div>
+
+    
+            </div>
+            <form class="formulario" action="{% url 'pagina_video' video.nome %}" method="POST">
+                {% csrf_token %}
+                <h2> Escreva o seu comentário: </h2>
+                {% include 'parciais/_messages.html' %}
+                <textarea name="texto" id="" cols="30" rows="10" placeholder="Fiquei com muito tesão..."></textarea>
+                <input type="submit" value="Enviar">
+            </form>
+
+            <div class="container-comentarios">
+                <!-- <div>
+                    <h2> Principais comentários dos inscritos: </h2>
+                </div> -->
+                <div class="comentarios">
+                    {% if comentarios %}
+                        {% for comentario in comentarios %}
+                            <div class="comentario">
+                                <img src="{% static 'images/user7.png' %}">
+                                <div>
+                                    <h3> {{comentario.perfil.nome}} </h3>
+                                    <p> {{comentario.comentario}} </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h1>
+                            Nenhum comentário ainda!
+                        </h1>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+    
+{% block scripts %}
+    <script src="{% static 'js/cabecalho.js' %}"></script>
+{% endblock %}

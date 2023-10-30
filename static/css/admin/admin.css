@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body{
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+:root{
+    --cor-principal: #e11775;
+    --cor-secundaria: #202425;
+    --cor-preto: black;
+    --cor-branco: #fff;
+    --cor-cinza: #535353;
+} 
+
+body, html{
+    background: var(--cor-secundaria) !important;
+}
+
+#header{
+    background: var(--cor-principal);
+}
+
+#content h1{
+    color: var(--cor-principal);
+}
+
+#content p{
+    color: var(--cor-principal)
+}
+
+tbody th a, td a{
+    color: var(--cor-preto) !important;
+}
+
+#content-main .submit-row input{
+    background: var(--cor-principal) !important;
+    color: var(--cor-branco) !important;
+}
+
+#content-main fieldset h2{
+    background: var(--cor-principal) !important;
+    color: var(--cor-branco) !important;
+    font-weight: bold;
+}
+
+#changelist-filter h2{
+    background: var(--cor-principal) !important;
+    color: var(--cor-secundaria) !important;
+}
+
+li a{
+    background: var(--cor-principal) !important;
+    color: var(--cor-secundaria) !important;
+    font-weight: bold;
+}
+
+caption{
+    background: var(--cor-principal) !important;
+}
+
+#container button{
+    background: var(--cor-secundaria) !important;
+}
+
+#branding a img{
+    width: 3rem;
+}
+
+#container .breadcrumbs{
+    background: var(--cor-secundaria);
+}
